@@ -24,6 +24,8 @@ ARG PETSC_SLEPC_OPTFLAGS="-O2 -g"
 ARG PETSC_SLEPC_DEBUGGING="yes"
 ARG MAKEFLAGS
 
+ARG BEMPP_VERSION="0.2.0"
+
 ########################################
 
 FROM ubuntu:20.04 as dolfinx-and-bempp
@@ -281,9 +283,11 @@ RUN git clone https://github.com/exafmm/exafmm-t.git
 RUN cd exafmm-t && ./configure && make && make install && python3 setup.py install
 
 # Download and install Bempp
-RUN git clone https://github.com/bempp/bempp-cl
-RUN cd bempp-cl && python3 setup.py install
-RUN cp -r bempp-cl/notebooks /root/example_notebooks
+RUN wget -nc --quiet https://github.com/bempp/bempp-cl/archive/v${BEMPP_VERSION}.tar.gz && \
+    tar -xf v${BEMPP_VERSION}.tar.gz && \
+    cd bempp-cl-${BEMPP_VERSION} && \
+    python3 setup.py install && \
+    cp -r notebooks /root/example_notebooks
 
 # Clear /tmp
 RUN rm -rf /tmp/*

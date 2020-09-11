@@ -280,8 +280,10 @@ ENV LD_LIBRARY_PATH=/usr/local/dolfinx-complex/lib:$LD_LIBRARY_PATH \
 RUN apt update && apt install libfftw3-dev -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-RUN git clone -b ${EXAFMM_VERSION} https://github.com/exafmm/exafmm-t.git
-RUN cd exafmm-t && sed -i 's/march=native/march=ivybridge/g' ./setup.py && python3 setup.py install
+RUN wget -nc --quiet https://github.com/exafmm/exafmm-t/archive/v${EXAFMM_VERSION}.tar.gz && \
+    tar -xf v${EXAFMM_VERSION}.tar.gz && \
+    cd exafmm-t-${EXAFMM_VERSION} && \
+    sed -i 's/march=native/march=ivybridge/g' ./setup.py && python3 setup.py install
 
 # Download and install Bempp
 RUN wget -nc --quiet https://github.com/bempp/bempp-cl/archive/v${BEMPP_VERSION}.tar.gz && \

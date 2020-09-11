@@ -25,7 +25,7 @@ ARG PETSC_SLEPC_DEBUGGING="yes"
 ARG MAKEFLAGS
 
 ARG BEMPP_VERSION="0.2.0"
-ARG EXAFMM_VERSION=v0.1.0
+ARG EXAFMM_VERSION="0.1.0"
 
 ########################################
 
@@ -128,23 +128,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     python3-lxml && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# Download and install ExaFMM
-RUN apt update && apt install libfftw3-dev -y && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-RUN wget -nc --quiet https://github.com/exafmm/exafmm-t/archive/v${EXAFMM_VERSION}.tar.gz
-RUN wget -nc --quiet https://github.com/exafmm/exafmm-t/archive/v${EXAFMM_VERSION}.tar.gz && \
-    tar -xf v${EXAFMM_VERSION}.tar.gz
-RUN wget -nc --quiet https://github.com/exafmm/exafmm-t/archive/v${EXAFMM_VERSION}.tar.gz && \
-    tar -xf v${EXAFMM_VERSION}.tar.gz && \
-    cd exafmm-t-${EXAFMM_VERSION}
-
-RUN wget -nc --quiet https://github.com/exafmm/exafmm-t/archive/v${EXAFMM_VERSION}.tar.gz && \
-    tar -xf v${EXAFMM_VERSION}.tar.gz && \
-    cd exafmm-t-${EXAFMM_VERSION} && \
-    sed -i 's/march=native/march=ivybridge/g' ./setup.py && python3 setup.py install
-
 
 # Install Python packages (via pip)
 RUN pip3 install --no-cache-dir mpi4py numba meshio>=4.0.16 && \

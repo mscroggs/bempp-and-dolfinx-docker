@@ -25,6 +25,7 @@ ARG PETSC_SLEPC_DEBUGGING="yes"
 ARG MAKEFLAGS
 
 ARG BEMPP_VERSION="0.2.0"
+ARG EXAFMM_VERSION=v0.1.0
 
 ########################################
 
@@ -279,8 +280,8 @@ ENV LD_LIBRARY_PATH=/usr/local/dolfinx-complex/lib:$LD_LIBRARY_PATH \
 RUN apt update && apt install libfftw3-dev -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-RUN git clone https://github.com/exafmm/exafmm-t.git
-RUN cd exafmm-t && ./configure && make && make install && python3 setup.py install
+RUN git clone -b ${EXAFMM_VERSION} https://github.com/exafmm/exafmm-t.git
+RUN cd exafmm-t && sed -i 's/march=native/march=ivybridge/g' ./setup.py && python3 setup.py install
 
 # Download and install Bempp
 RUN wget -nc --quiet https://github.com/bempp/bempp-cl/archive/v${BEMPP_VERSION}.tar.gz && \

@@ -252,9 +252,8 @@ RUN pip3 install --no-cache-dir ipython && \
     pip3 install --no-cache-dir git+https://github.com/FEniCS/ffcx.git
 
 # Install FEniCS
-RUN git clone --depth 1 https://github.com/fenics/dolfinx.git && \
+RUN git clone --depth 1 -b chris/surface-facets https://github.com/fenics/dolfinx.git && \
     cd dolfinx && \
-    git checkout chris/surface-facets && \
     mkdir build && \
     cd build && \
     PETSC_ARCH=linux-gnu-real-32 cmake -G Ninja -DCMAKE_INSTALL_PREFIX=/usr/local/dolfinx-real ../cpp && \

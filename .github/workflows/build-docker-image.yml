@@ -8,6 +8,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Get branch name
+        id: vars
+        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
+      - name: Check branch name
+        run: echo ${{ steps.vars.outputs.short_ref }}
       - name: Make cache folder
         run: mkdir ~/cache
       - name: Cache Dockerfile
@@ -35,7 +40,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: mscroggs/bempp-cl-and-dolfinx
-          tags: latest
+          tags: ${{ steps.vars.outputs.short_ref }}
           target: dolfinx-and-bempp
-          cache_froms: mscroggs/bempp-cl-and-dolfinx:latest
+          cache_froms: mscroggs/bempp-cl-and-dolfinx:${{ steps.vars.outputs.short_ref }}
         if: steps.diff.outputs.changed == 'yes'

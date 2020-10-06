@@ -61,4 +61,4 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Run test
-        run: python3 test.py
+        run: python3 .github/scripts/test.py

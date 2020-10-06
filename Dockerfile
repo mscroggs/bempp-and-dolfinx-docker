@@ -4,12 +4,6 @@
 #   Matthew Scroggs <mws48@cam.ac.uk>
 #   Timo Betcke <t.betcke@ucl.ac.uk>
 #
-# Based on the FEniCSx Docker file written by:
-#   Jack S. Hale <jack.hale@uni.lu>
-#   Lizao Li <lzlarryli@gmail.com>
-#   Garth N. Wells <gnw20@cam.ac.uk>
-#   Jan Blechta <blechta@karlin.mff.cuni.cz>
-#
 
 ARG DOLFINX_MAKEFLAGS
 
@@ -36,6 +30,10 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Install Python packages (via pip)
+RUN pip3 install --no-cache-dir meshio>=4.0.16
+
 
 # Install FEniCSx componenets
 RUN pip3 install --no-cache-dir ipython && \

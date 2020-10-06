@@ -11,7 +11,7 @@ jobs:
       - name: Get tag name
         id: vars
         run: |
-            if [ ${GITHUB_REF#refs/*/} -eq master ]
+            if [ ${GITHUB_REF#refs/*/} == "master" ]
             then
               echo ::set-output name=tag::latest
             else

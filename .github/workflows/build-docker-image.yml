@@ -5,6 +5,8 @@ jobs:
   build-and-publish-docker:
     name: Build and publish testing environment docker image
     runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.vars.outputs.tag }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -26,7 +28,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/cache/Dockerfile
-          key: ${{ runner.os }}-Dockerfile-${{ steps.vars.outputs.tag}}-${{ hashFiles('Dockerfile') }}
+          key: ${{ runner.os }}-Dockerfile-${{ steps.vars.outputs.tag }}-${{ hashFiles('Dockerfile') }}
       - name: touch ~/cache/Dockerfile
         run: touch ~/cache/Dockerfile
       - name: compare Dockerfile with cache
@@ -50,3 +52,13 @@ jobs:
           target: dolfinx-and-bempp
           cache_froms: mscroggs/bempp-cl-and-dolfinx:${{ steps.vars.outputs.tag }}
         if: steps.diff.outputs.changed == 'yes'
+  test-image:
+    name: Test import bempp and dolfinx
+    needs: build-and-publish-docker
+    runs-on: ubuntu-latest
+    container: mscroggs/bempp-cl-and-dolfinx:${{ needs.build-and-publish-docker.outputs.tag }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Run test
+        run: python3 .github/scripts/test.py

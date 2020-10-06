@@ -50,3 +50,13 @@ jobs:
           target: dolfinx-and-bempp
           cache_froms: mscroggs/bempp-cl-and-dolfinx:${{ steps.vars.outputs.tag }}
         if: steps.diff.outputs.changed == 'yes'
+  test-image:
+    name: Test import bempp and dolfinx
+    needs: build-and-publish-docker
+    runs-on: ubuntu-latest
+    container: mscroggs/bempp-cl-and-dolfinx:${{ steps.vars.outputs.tag }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Run test
+        run: python .github/scripts/test.py

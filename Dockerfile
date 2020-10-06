@@ -11,18 +11,7 @@
 #   Jan Blechta <blechta@karlin.mff.cuni.cz>
 #
 
-ARG GMSH_VERSION=4.6.0
-ARG PYBIND11_VERSION=2.5.0
-ARG PETSC_VERSION=3.13.2
-ARG SLEPC_VERSION=3.13.2
-ARG PETSC4PY_VERSION=3.13.0
-ARG SLEPC4PY_VERSION=3.13.0
-# Should be updated upon a new KaHIP release
-ARG KAHIP_VERSION=14be06c
-
-ARG PETSC_SLEPC_OPTFLAGS="-O2 -g"
-ARG PETSC_SLEPC_DEBUGGING="yes"
-ARG MAKEFLAGS
+ARG DOLFINX_MAKEFLAGS
 
 ARG BEMPP_VERSION=0.2.2
 ARG EXAFMM_VERSION=0.1.0
@@ -32,6 +21,10 @@ ARG EXAFMM_VERSION=0.1.0
 FROM dolfinx/dev-env as dolfinx-and-bempp
 LABEL maintainer="Matthew Scroggs <matt@mscroggs.co.uk>"
 LABEL description="TODO"
+
+ARG DOLFINX_MAKEFLAGS
+ARG BEMPP_VERSION
+ARG EXAFMM_VERSION
 
 RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get -qq update && \
@@ -80,7 +73,7 @@ RUN git clone --depth 1 https://github.com/fenics/dolfinx.git && \
     mkdir build && \
     cd build && \
     PETSC_ARCH=linux-gnu-real-32 cmake -G Ninja -DCMAKE_INSTALL_PREFIX=/usr/local/dolfinx-real ../cpp && \
-    ninja ${MAKEFLAGS} install && \
+    ninja ${DOLFINX_MAKEFLAGS} install && \
     cd ../python && \
     PETSC_ARCH=linux-gnu-real-32 pip3 install --target /usr/local/dolfinx-real/lib/python3.8/dist-packages --no-dependencies --ignore-installed . && \
     cd ../ && \
@@ -88,7 +81,7 @@ RUN git clone --depth 1 https://github.com/fenics/dolfinx.git && \
     mkdir build && \
     cd build && \
     PETSC_ARCH=linux-gnu-complex-32 cmake -G Ninja -DCMAKE_INSTALL_PREFIX=/usr/local/dolfinx-complex ../cpp && \
-    ninja ${MAKEFLAGS} install && \
+    ninja ${DOLFINX_MAKEFLAGS} install && \
     . /usr/local/dolfinx-complex/share/dolfinx/dolfinx.conf && \
     cd ../python && \
     PETSC_ARCH=linux-gnu-complex-32 pip3 install --target /usr/local/dolfinx-complex/lib/python3.8/dist-packages --no-dependencies --ignore-installed .

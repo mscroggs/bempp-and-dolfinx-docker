@@ -35,29 +35,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     pkg-config \
     python-is-python3 \
     jupyter \
-#    libfltk-gl1.3 \
-#    libfltk-images1.3 \
-#    libfltk1.3 \
-#    libfreeimage3 \
-#    libgl2ps1.4 \
-#    libglu1-mesa \
-#    libilmbase24 \
-#    libjxr0 \
-#    libocct-data-exchange-7.3 \
-#    libocct-foundation-7.3 \
-#    libocct-modeling-algorithms-7.3 \
-#    libocct-modeling-data-7.3 \ 
-#    libocct-ocaf-7.3 \
-#    libocct-visualization-7.3 \
-#    libopenexr24 \
-#    libopenjp2-7 \
-#    libraw19 \
-#    libtbb2 \
-#    libxcursor1 \
-#    libxinerama1 \
     && \
-    apt-get -y install \
-    python3-lxml && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 

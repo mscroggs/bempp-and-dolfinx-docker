@@ -61,5 +61,5 @@ jobs:
         uses: actions/checkout@v2
       - name: Run test
         run: |
-            docker pull mscroggs/bempp-cl-and-dolfinx:${{ needs.build-and-publish-docker.tag }}
+            docker pull mscroggs/bempp-cl-and-dolfinx:${{ needs.build-and-publish-docker.outputs.tag }}
             docker run -v $(pwd):/mnt/bempp mscroggs/bempp-cl-and-dolfinx:${{ needs.build-and-publish-docker.tag }} python /mnt/bempp/.github/scripts/test.py

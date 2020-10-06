@@ -56,7 +56,7 @@ jobs:
     name: Test import bempp and dolfinx
     needs: build-and-publish-docker
     runs-on: ubuntu-latest
-    container: mscroggs/bempp-cl-and-dolfinx:${{ jobs.build-and-publish-docker.tag }}
+    container: mscroggs/bempp-cl-and-dolfinx:${{ needs.build-and-publish-docker.tag }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
